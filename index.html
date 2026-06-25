@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gowtham</title>
+  <meta name="description" content="Welcome to Gowtham's corner of the internet." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg:        #050A14;
+      --surface:   #0D1828;
+      --teal:      #00C9B1;
+      --violet:    #7C5BF5;
+      --white:     #E8EEFF;
+      --muted:     #4A5A7A;
+      --dot-color: #0D1F38;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--white);
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ── dot grid background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
+      background-size: 36px 36px;
+      opacity: 0.9;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── ambient glow ── */
+    body::after {
+      content: '';
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 201, 177, 0.07) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+      animation: breathe 6s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1);   }
+      50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.15); }
+    }
+
+    /* ── main content ── */
+    .stage {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    /* ── eyebrow ── */
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      color: var(--teal);
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeSlideUp 0.6s ease forwards 0.2s;
+    }
+
+    /* ── name ── */
+    .name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(3.5rem, 14vw, 9rem);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1;
+      color: var(--white);
+      position: relative;
+    }
+
+    /* teal underline accent */
+    .name::after {
+      content: '';
+      display: block;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--teal), var(--violet));
+      margin-top: 10px;
+      border-radius: 2px;
+      transition: width 0.8s cubic-bezier(.16,1,.3,1);
+    }
+
+    .name.line-ready::after {
+      width: 100%;
+    }
+
+    /* cursor blink */
+    .cursor {
+      display: inline-block;
+      width: 4px;
+      height: 0.85em;
+      background: var(--teal);
+      margin-left: 6px;
+      vertical-align: middle;
+      border-radius: 1px;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    /* ── tagline ── */
+    .tagline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.75rem, 2.5vw, 0.95rem);
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      min-height: 1.4em;
+      opacity: 0;
+    }
+
+    .tagline.visible {
+      opacity: 1;
+    }
+
+    /* ── social dots ── */
+    .links {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      opacity: 0;
+      animation: fadeSlideUp 0.6s ease forwards 3.6s;
+    }
+
+    .links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--muted);
+      border-radius: 50%;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      transition: border-color 0.25s, color 0.25s, transform 0.25s;
+    }
+
+    .links a:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      transform: translateY(-3px);
+    }
+
+    /* ── corner tag ── */
+    .corner {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-transform: uppercase;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeSlideUp 0.6s ease forwards 4s;
+    }
+
+    /* ── shared fade-up ── */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    /* ── reduced motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="stage">
+    <p class="eyebrow">Welcome to my corner of the internet</p>
+
+    <h1 class="name" id="name" aria-label="Gowtham"><span id="typed"></span><span class="cursor" id="cursor"></span></h1>
+
+    <p class="tagline" id="tagline"></p>
+
+    <nav class="links" aria-label="Social links">
+      <!-- swap href values to your real profiles -->
+      <a href="https://linkedin.com/in/yourhandle" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+      <a href="https://github.com/yourhandle"      target="_blank" rel="noopener" aria-label="GitHub">gh</a>
+      <a href="mailto:you@yourdomain.com"           aria-label="Email">@</a>
+    </nav>
+  </main>
+
+  <span class="corner">gowthamc.online</span>
+
+  <script>
+    /* ── type-out animation ── */
+    const NAME    = 'GOWTHAM';
+    const TAGLINE = '_ devops engineer  ·  builder  ·  farmer';
+
+    const typedEl  = document.getElementById('typed');
+    const cursorEl = document.getElementById('cursor');
+    const tagEl    = document.getElementById('tagline');
+    const nameEl   = document.getElementById('name');
+
+    let i = 0;
+
+    function typeName() {
+      if (i < NAME.length) {
+        typedEl.textContent += NAME[i++];
+        setTimeout(typeName, 110);
+      } else {
+        // name done — trigger underline
+        setTimeout(() => nameEl.classList.add('line-ready'), 80);
+        // fade cursor then type tagline
+        setTimeout(() => {
+          cursorEl.style.opacity = '0';
+          cursorEl.style.transition = 'opacity 0.4s';
+          typeTagline(0);
+        }, 700);
+      }
+    }
+
+    function typeTagline(j) {
+      if (j === 0) {
+        tagEl.classList.add('visible');
+        tagEl.style.transition = 'opacity 0.4s';
+      }
+      if (j < TAGLINE.length) {
+        tagEl.textContent += TAGLINE[j];
+        setTimeout(() => typeTagline(j + 1), 36);
+      }
+    }
+
+    // small delay before typing starts
+    setTimeout(typeName, 600);
+  </script>
+
+</body>
+</html>
